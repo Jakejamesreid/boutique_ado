@@ -10,15 +10,14 @@ from profiles.models import UserProfile
 import json
 import time
 
-
 class StripeWH_Handler:
-    """ Handle Stripe webhooks """
+    """Handle Stripe webhooks"""
 
     def __init__(self, request):
         self.request = request
 
     def _send_confirmation_email(self, order):
-        """ Send the user a confirmation email """
+        """Send the user a confirmation email"""
         cust_email = order.email
         subject = render_to_string(
             'checkout/confirmation_emails/confirmation_email_subject.txt',
@@ -81,7 +80,6 @@ class StripeWH_Handler:
             try:
                 order = Order.objects.get(
                     full_name__iexact=shipping_details.name,
-                    user_profile=profile,
                     email__iexact=billing_details.email,
                     phone_number__iexact=shipping_details.phone,
                     country__iexact=shipping_details.address.country,
